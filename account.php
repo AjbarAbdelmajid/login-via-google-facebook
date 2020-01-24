@@ -2,33 +2,11 @@
 /**
  * Build a simple HTML page with multiple providers.
  */
+ini_set('display_errors', '1');
 
-use Hybridauth\Hybridauth;
 include 'vendor/autoload.php';
-
-$config = [
-    'callback' => 'http://localhost/testSocialLogin/login.php',
-    'providers' => [
-        'GitHub' => [ 
-            'enabled' => false,
-            'keys'    => [ 'id' => '', 'secret' => '' ], 
-        ],
-
-        'Google' => [ 
-            'enabled' => true,
-            'keys' => [
-                'id'     => '649634393214-mo3l2hl3f33m7kc8q4cve9h8p9uh8abu.apps.googleusercontent.com', //Required: your Facebook application id
-                'secret' => 'NbYBJ4dJkNFtKY00Fl3Ibb_C'
-            ],
-        ],
-
-        'Facebook' => [ 
-            'enabled' => false,
-            'keys'    => [ 'id' => '', 'secret' => '' ],
-        ],
-    ],
-
-];
+use Hybridauth\Hybridauth;
+include 'callback.php';
 
 $hybridauth = new Hybridauth($config);
 $providers = $hybridauth->getProviders();
@@ -53,8 +31,8 @@ $providers = $hybridauth->getProviders();
                 ?>
                     <li>
                     <?php print $config['callback'] . "?provider={$name}"; ?>
-                        <button name="valider_google">
-                    <a href="<?php print $config['callback'] . "?provider={$name}"; ?>"> connect via google</a>
+                        <button type="submit" name="valider_google">
+                    <a href="<?php print $config['callback'] . "?provider={$name}"; ?>"> connect via <?php echo $name; ?></a>
                 </button>
                     </li>
             <?php 
