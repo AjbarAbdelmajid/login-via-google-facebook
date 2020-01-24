@@ -37,18 +37,10 @@ use Hybridauth\Hybridauth;
 $hybridauth = new Hybridauth($config);
 
 $providers = $hybridauth->getProviders();
-$providerName = $_SESSION['provider'];
+
 $userProfile = $_SESSION['userProfile'];
 // var_dump( $_SESSION);exit;
-# setting up the conection to DB
-    $csx_host_bd="localhost";
-    $csx_nom_bd="timoulayhotel-com";
-    $csx_user_bd="root";
-    $csx_pass_bd="123";
-    $connexion=mysql_connect ($csx_host_bd, $csx_user_bd, $csx_pass_bd) or die ('Connexion impossible erreur : ' . mysql_error());
-    mysql_select_db($csx_nom_bd);
-    mysql_query("SET NAMES 'UTF8'"); // encodage utf8 
-#
+
 # check if the user exist
     $req_pays=mysql_query("select * from `users` where email = '". $userProfile->email."'");
     # response handling
@@ -57,6 +49,7 @@ $userProfile = $_SESSION['userProfile'];
         else        
             $val_pays = mysql_fetch_object($req_pays);
     #
+    //var_dump($val_pays);
     //var_dump($providerName,'dfgdf', $val_pays,'--------------', unserialize(base64_decode($val_pays->Google_data)));
 #
 
@@ -77,8 +70,8 @@ sdfsdf
     <ul>
         <li>
             <strong><?php print $userProfile->displayName; ?></strong> from
-            <i><?php print $providerName; ?></i>
-            <span>(<a href="<?php print "http://www.testlogin.test/account.php" . "?logout={$providerName}"; ?>">Log Out</a>)</span>
+            <i><?php print $_SESSION['provider']; ?></i>
+            <span>(<a href="<?php print "http://www.testlogin.test/account.php" . "?logout={$_SESSION['provider']}"; ?>">Log Out</a>)</span>
         </li>
     </ul>
 <?php endif; ?>

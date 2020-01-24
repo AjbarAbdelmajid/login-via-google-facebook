@@ -9,6 +9,7 @@ ini_set('xdebug.var_display_max_data', '-1');
 
 include 'vendor/autoload.php';
 include 'config.php';
+include 'db_config.php';
 
 use Hybridauth\Exception\Exception;
 use Hybridauth\Hybridauth;
@@ -50,16 +51,7 @@ try {
         $_SESSION['userProfile'] = $userProfile;
         $_SESSION['provider'] = $provider;
         // var_dump( $userProfile); exit;
-         
-        # setting up the conection to DB
-            $csx_host_bd="localhost";
-            $csx_nom_bd="timoulayhotel-com";
-            $csx_user_bd="root";
-            $csx_pass_bd="123";
-            $connexion=mysql_connect ($csx_host_bd, $csx_user_bd, $csx_pass_bd) or die ('Connexion impossible erreur : ' . mysql_error());
-            mysql_select_db($csx_nom_bd);
-            mysql_query("SET NAMES 'UTF8'"); // encodage utf8 
-        #
+       
         # check if the user exist
             $req_pays=mysql_query("select * from `users` where email = '". $userProfile->email."'");
             # response handling
@@ -68,21 +60,32 @@ try {
                 else        
                     $val_pays = mysql_fetch_object($req_pays);
             #
+            
 
             # add the user if not exist 
                 if(!$val_pays){
-                    $txt_req_res="INSERT INTO `users` (
-                        `email`, `lastname`, `firstname`
-                        ) VALUES ('".$userProfile->email."', '". $userProfile->firstName."','".$userProfile->lastName."');";
-            
+                    $txt_req_res="INSERT IGNORE INTO `users` (
+                        `email`, `firstname`, `lastname`, `tele`, `adress`, `ville`, `codepostal`, `".$provider."_data`, `".$provider."_username`, `".$provider."_identifier`
+                        ) VALUES ('".$userProfile->email."', '". $userProfile->firstName."',
+                        '".$userProfile->lastName."',
+                        '".$userProfile->phone."',
+                        '".$userProfile->address."',
+                        '".$userProfile->city."',
+                        '".$userProfile->zip."',
+                        '".base64_encode(serialize($userProfile))."',
+                        '".$userProfile->displayName."',
+                        '".$userProfile->identifier."'
+                        );";
+
                     mysql_query($txt_req_res);
                     $result = mysql_query($txt_req_res, $connexion) or var_dump($txt_req_res, mysql_error());
+                    
                 }
             #
             # update user social media data if user existe
                 else{
                     $txt_req_res="UPDATE `users`
-                    SET ".$provider."_username='".$userProfile->displayName."', ".$provider."_data='".base64_encode(serialize($userProfile))."', ".$provider."_identifire='".$userProfile->identifier."'
+                    SET ".$provider."_username='".$userProfile->displayName."', ".$provider."_data='".base64_encode(serialize($userProfile))."', ".$provider."_identifier='".$userProfile->identifier."'
                     WHERE email ='".$userProfile->email."'";
             
                     mysql_query($txt_req_res);
