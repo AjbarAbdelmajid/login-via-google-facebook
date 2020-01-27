@@ -9,7 +9,7 @@ ini_set('xdebug.var_display_max_data', '-1');
 
 include 'vendor/autoload.php';
 include 'config.php';
-include 'db_config.php';
+include_once 'db_config.php';
 
 use Hybridauth\Exception\Exception;
 use Hybridauth\Hybridauth;
@@ -64,8 +64,11 @@ try {
 
             # add the user if not exist 
                 if(!$val_pays){
+                    $generated_password = $userProfile->firstName.'_'.substr(''.$userProfile->identifier, 0, 2).'_'.$userProfile->lastName; 
+                    # firstname + _ + 4 degits from identifire + _ + lastname;
+                    $hashed_password = password_hash($generated_password, PASSWORD_DEFAULT);
                     $txt_req_res="INSERT IGNORE INTO `users` (
-                        `email`, `firstname`, `lastname`, `tele`, `adress`, `ville`, `codepostal`, `".$provider."_data`, `".$provider."_username`, `".$provider."_identifier`
+                        `email`, `firstname`, `lastname`, `tele`, `adress`, `ville`, `codepostal`, `".$provider."_data`, `".$provider."_username`, `password`, `".$provider."_identifier`
                         ) VALUES ('".$userProfile->email."', '". $userProfile->firstName."',
                         '".$userProfile->lastName."',
                         '".$userProfile->phone."',
@@ -74,6 +77,7 @@ try {
                         '".$userProfile->zip."',
                         '".base64_encode(serialize($userProfile))."',
                         '".$userProfile->displayName."',
+                        '".$hashed_password."',
                         '".$userProfile->identifier."'
                         );";
 

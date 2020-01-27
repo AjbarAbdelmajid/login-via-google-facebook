@@ -1,5 +1,7 @@
 <?php
 require_once 'vendor/hybridauth/hybridauth/src/autoload.php';
+include_once 'vendor/autoload.php';
+use Hybridauth\Hybridauth;
 
 $config = [
     'callback' => 'http://localhost/testSocialLogin/login.php',
@@ -26,7 +28,8 @@ $config = [
     ],
 
 ];
-
+$hybridauth = new Hybridauth($config);
+$providers = $hybridauth->getProviders();
 // $adapter = new Hybridauth\Provider\Google($config);
 
 // $adapter->authenticate();
