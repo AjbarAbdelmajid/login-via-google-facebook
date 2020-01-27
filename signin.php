@@ -1,16 +1,21 @@
 <?php 
     include 'callback.php';
-
+    $signupErrorLogger = '';
     if (isset($_POST['valider'])) {
         # searsh for email and password
             # if not exist post error
-                $val_pays=mysql_query("select * from `users` where email = '".$_POST['email']."'");
+                $req=mysql_query("select * from `users` where email = '".$_POST['email']."'");
                  # check if the user exist
+                 $val_pays = mysql_fetch_object($req);
+                 
                  if($val_pays){ 
-                    if (password_verify($_POST['password'], $val_pays['password'])) {
+                    if (password_verify($_POST['password'], $val_pays->password)) {
+                        // var_dump($val_pays->password, $_POST);exit;
                         $_SESSION['user']['loggedin'] = true;
-                        $_SESSION['user']['email'] = $_POST['email_client'];
-                        $_SESSION['user']['id'] = $val_pays->id;;
+                        $_SESSION['user']['email'] = $_POST['email'];
+                        $_SESSION['user']['id'] = $val_pays->id;
+                        var_dump($_SESSION);exit;
+                        header("Location: http://example.com/session.php");
                     }else{
                         $signupErrorLogger = 'authentification error';
                     }
@@ -62,7 +67,7 @@
             <?php foreach ($providers as $key=>$name) { ?>
                 <ul>
                     <li>
-                        <button ><a href="<?php print $config['callback'] . "?provider={$name}"; ?>"> connect via <?php echo $name; ?></a> </button>
+                        <button ><a target="_blank" href="<?php print $config['callback'] . "?provider={$name}"; ?>"> connect via <?php echo $name; ?></a> </button>
                     </li>
                 </ul>
             <?php }; ?>

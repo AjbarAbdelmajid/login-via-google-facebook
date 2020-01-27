@@ -83,6 +83,19 @@ try {
 
                     mysql_query($txt_req_res);
                     $result = mysql_query($txt_req_res, $connexion) or var_dump($txt_req_res, mysql_error());
+                    # get db data
+                        $req_user=mysql_query("select id from `users` where email = '". $userProfile->email."'");
+                        # response handling
+                            if(!$req_user)
+                                var_dump(mysql_error());
+                            else  {      
+                                $userid = mysql_fetch_object($req_user);
+                                $_SESSION['user']['loggedin'] = true;
+                                $_SESSION['user']['email'] = $userProfile->email;
+                                $_SESSION['user']['id'] = $userid['id'];
+                            }
+                        #
+                    # add data to user session
                     
                 }
             #
@@ -108,6 +121,7 @@ try {
         $adapter = $hybridauth->getAdapter($_GET['logout']);
         $adapter->disconnect();
         HttpClient\Util::redirect('http://www.testlogin.test/account.php');
+        unset($_SESSION['user']);
     }
 
     /**

@@ -42,7 +42,7 @@ $userProfile = $_SESSION['userProfile'];
 // var_dump( $_SESSION);exit;
 
 # check if the user exist
-    $req_pays=mysql_query("select * from `users` where email = '". $userProfile->email."'");
+    $req_pays=mysql_query("select * from `users` where email = '".$_SESSION['user']['email']."'");
     # response handling
         if(!$req_pays)
             var_dump(mysql_error());
@@ -69,7 +69,9 @@ sdfsdf
     <h1>You are logged in:</h1>
     <ul>
         <li>
-            <strong><?php print $userProfile->displayName; ?></strong> from
+            <!-- <strong>
+                <?php # print $userProfile->displayName; ?>
+            </strong> from -->
             <i><?php print $_SESSION['provider']; ?></i>
             <span>(<a href="<?php print "http://www.testlogin.test/account.php" . "?logout={$_SESSION['provider']}"; ?>">Log Out</a>)</span>
         </li>

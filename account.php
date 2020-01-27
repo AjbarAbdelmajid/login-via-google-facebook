@@ -34,6 +34,43 @@ if(isset($_POST['valider'])){
                                     
             <!-- col left -->
             <div class="col-left">
+
+            <p>
+                <label>agence name :</label>
+                <input name="nom_agence" type="text" class="{validate:{required:true, messages:{required:'• <?php echo "TXT_extra_ins_nomag_val"; ?>'}}}"/>
+            </p>
+            <p>
+                <label><?php echo 'TXT_extra_ins_niata'; ?>  :</label>
+                <input name="num_iata" type="text" class="{validate:{required:true, messages:{required:'• <?php echo "TXT_extra_ins_niata_val"; ?>'}}}"/>
+            </p>
+            <p>
+                <label><?php echo "TXT_extra_ins_if"; ?> :</label>
+                <input name="id_fiscale" type="text" class="{validate:{required:true, messages:{required:'• <?php echo "TXT_extra_ins_if_val"; ?>'}}}"/>
+            </p>
+            <p>
+                <label><?php echo "TXT_extra_ins_directeur"; ?> :</label>
+                <input name="nomc_directeur" type="text" class="{validate:{required:true, messages:{required:'• <?php echo "TXT_extra_ins_directeur_val"; ?>'}}}"/>
+            </p>
+            <p>
+                <label><?php echo "TXT_extra_ins_adresse"; ?> :</label>
+                <input name="adresse_agence" type="text" class="{validate:{required:true, messages:{required:'• <?php echo "TXT_extra_ins_adresse_val"; ?>'}}}" />
+            </p>
+            <p>
+                <label><?php echo "TXT_extra_ins_cp"; ?> :</label>
+                <input name="cp_agence" type="text" class="{validate:{required:true, messages:{required:'• <?php echo "TXT_extra_ins_cp_val"; ?>'}}}"/>
+            </p>
+            <p>
+                <label><?php echo 'TXT_extra_ins_fax'; ?>  :</label>
+                <input name="fax_agence" type="text" class="{validate:{required:true, messages:{required:'• <?php echo "TXT_extra_ins_fax_val"; ?>'}}}"/>
+            </p>
+            <p>
+                <label><?php echo 'TXT_extra_ins_passe'; ?> :</label><input id="password_agence" name="password_agence" type="password" class="{validate:{required:true,minlength:6, messages:{required:'• <?php echo "TXT_extra_ins_passe_val"; ?>',minlength:'• <?php echo "TXT_extra_ins_passe_val2"; ?>'}}}" />
+            </p>
+            <p>
+                <label><?php echo 'TXT_extra_ins_repeat_passe'; ?> :</label><input  name="password_agencec" type="password" class="{validate:{equalTo:'#password_agence', messages:{equalTo:'• <?php echo "TXT_extra_ins_repeat_passe_val"; ?>'}}}"/>
+            </p>
+
+
                 <!-- debut input-->
                 <div class="input-group">
                 <select name="civilite" class="{validate:{required:true, messages:{required:'•  TXT_contact_civilite_val '}}}">
@@ -45,7 +82,7 @@ if(isset($_POST['valider'])){
                 <!--fin input-->
                 <!-- debut input-->
                 <div class="input-group">
-                <input name="nom_client" type="text" class="{validate:{required:true, messages:{required:'•  TXT_contact_nom_val; ?>'}}}" placeholder=" nom_client *">                                       
+                    <input name="nom_client" type="text" class="{validate:{required:true, messages:{required:'•  TXT_contact_nom_val; ?>'}}}" placeholder=" nom_client *">                                       
                 </div>
                 <!--fin input-->
                 <!-- debut input-->
@@ -132,7 +169,7 @@ if(isset($_POST['valider'])){
             <?php foreach ($providers as $key=>$name) { ?>
                 <ul>
                     <li>
-                        <button ><a href="<?php print $config['callback'] . "?provider={$name}"; ?>"> connect via <?php echo $name; ?></a> </button>
+                        <button ><a target="_blank" href="<?php print $config['callback'] . "?provider={$name}"; ?>"> connect via <?php echo $name; ?></a> </button>
                     </li>
                 </ul>
             <?php }; ?>
